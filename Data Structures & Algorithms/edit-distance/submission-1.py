@@ -1,0 +1,18 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        N, M = len(word1), len(word2)
+        dp = [[-1] * M for i in range(N)]
+        def dfs(i, j):
+            if i == N: return M - j
+            if j == M: return N - i
+
+            if dp[i][j] != -1: return dp[i][j]
+
+            if word1[i] != word2[j]:
+                dp[i][j] = 1 + min(dfs(i + 1, j + 1), dfs(i + 1, j), dfs(i, j + 1))
+                return dp[i][j]
+
+            dp[i][j] = dfs(i + 1, j + 1)
+            return dp[i][j]
+
+        return dfs(0, 0)
