@@ -1,0 +1,54 @@
+CREATE TABLE customers (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name TEXT
+);
+
+CREATE TABLE orders (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  customer_id INTEGER,
+  price INTEGER
+);
+
+INSERT INTO customers (name) VALUES
+  ('Alice'),
+  ('Bob'),
+  ('Charlie'),
+  ('David'),
+  ('Eve'),
+  ('Frank'),
+  ('Grace'),
+  ('Hank');
+
+INSERT INTO orders (customer_id, price) VALUES
+  (1, 50),
+  (2, 100),
+  (3, 150),
+  (4, 200),
+  (5, 250),
+  (6, 30),
+  (7, 70),
+  (8, 400);
+-- Do not modify above this line. --
+
+
+
+
+
+
+WITH high_value_orders AS (
+    SELECT customer_id, SUM(price) as total_spend
+    FROM orders
+    GROUP BY customer_id
+    HAVING SUM(price) < 1000
+)
+
+SELECT c.name, hvo.total_spend
+FROM customers c
+JOIN high_value_orders hvo ON c.id = hvo.customer_id
+ORDER BY hvo.total_spend DESC;
+
+
+
+
+
+
